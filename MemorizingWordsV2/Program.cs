@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MemorizingWordsV2
+namespace MemorizingWordsV2.ConsoleApplication
 {
     class Program
     {
