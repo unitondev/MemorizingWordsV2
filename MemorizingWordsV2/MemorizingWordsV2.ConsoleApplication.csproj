@@ -3,6 +3,8 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>MemorizingWordsV2.ConsoleApplication</AssemblyName>
+        <RootNamespace>MemorizingWordsV2.ConsoleApplication</RootNamespace>
     </PropertyGroup>
 
 </Project>
