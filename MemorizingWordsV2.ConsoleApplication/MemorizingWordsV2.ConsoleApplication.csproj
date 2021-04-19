@@ -7,4 +7,9 @@
         <RootNamespace>MemorizingWordsV2.ConsoleApplication</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MemorizingWordsV2.Application\MemorizingWordsV2.Application.csproj" />
+      <ProjectReference Include="..\MemorizingWordsV2.Infrastructure\MemorizingWordsV2.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
