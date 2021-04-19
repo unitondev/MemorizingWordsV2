@@ -38,7 +38,7 @@ namespace MemorizingWordsV2.Infrastructure
             modelBuilder.Entity<EnglishRussianWord>(entity =>
             {
                 entity.HasKey(e => new { e.EnglishId, e.RussianId })
-                    .HasName("PK__English___599173F6BFE35253");
+                    .HasName("PK__English___599173F6506BDEBE");
 
                 entity.ToTable("English_Russian_Words");
 
@@ -50,18 +50,23 @@ namespace MemorizingWordsV2.Infrastructure
                     .WithMany(p => p.EnglishRussianWords)
                     .HasForeignKey(d => d.EnglishId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__English_R__engli__403A8C7D");
+                    .HasConstraintName("FK__English_R__engli__4AB81AF0");
 
                 entity.HasOne(d => d.Russian)
                     .WithMany(p => p.EnglishRussianWords)
                     .HasForeignKey(d => d.RussianId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__English_R__russi__412EB0B6");
+                    .HasConstraintName("FK__English_R__russi__4BAC3F29");
+
             });
 
             modelBuilder.Entity<EnglishWord>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasPrecision(0)
+                    .HasColumnName("created_at");
 
                 entity.Property(e => e.PartOfSpeechId).HasColumnName("part_of_speech_id");
 
@@ -75,7 +80,8 @@ namespace MemorizingWordsV2.Infrastructure
                     .WithMany(p => p.EnglishWords)
                     .HasForeignKey(d => d.PartOfSpeechId)
                     .OnDelete(DeleteBehavior.SetNull)
-                    .HasConstraintName("FK__EnglishWo__part___3B75D760");
+                    .HasConstraintName("FK__EnglishWo__part___45F365D3");
+
             });
 
             modelBuilder.Entity<PartOfSpeech>(entity =>
