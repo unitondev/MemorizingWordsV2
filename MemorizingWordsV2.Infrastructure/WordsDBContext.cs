@@ -57,6 +57,7 @@ namespace MemorizingWordsV2.Infrastructure
                     .HasForeignKey(d => d.RussianId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__English_R__russi__4BAC3F29");
+
             });
 
             modelBuilder.Entity<EnglishWord>(entity =>
@@ -80,6 +81,7 @@ namespace MemorizingWordsV2.Infrastructure
                     .HasForeignKey(d => d.PartOfSpeechId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK__EnglishWo__part___45F365D3");
+
             });
 
             modelBuilder.Entity<PartOfSpeech>(entity =>
