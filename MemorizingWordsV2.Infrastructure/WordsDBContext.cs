@@ -49,13 +49,13 @@ namespace MemorizingWordsV2.Infrastructure
                 entity.HasOne(d => d.English)
                     .WithMany(p => p.EnglishRussianWords)
                     .HasForeignKey(d => d.EnglishId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__English_R__engli__4AB81AF0");
 
                 entity.HasOne(d => d.Russian)
                     .WithMany(p => p.EnglishRussianWords)
                     .HasForeignKey(d => d.RussianId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK__English_R__russi__4BAC3F29");
 
             });
