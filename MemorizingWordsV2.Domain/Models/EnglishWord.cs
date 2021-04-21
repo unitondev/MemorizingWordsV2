@@ -6,14 +6,13 @@ using System.Collections.Generic;
 
 namespace MemorizingWordsV2.Domain.Models
 {
-    public partial class EnglishWord
+    public partial class EnglishWord : Model
     {
         public EnglishWord()
         {
             EnglishRussianWords = new HashSet<EnglishRussianWord>();
         }
-
-        public int Id { get; set; }
+        
         public string Word { get; set; }
         public int? PartOfSpeechId { get; set; }
         public DateTime? CreatedAt { get; set; }
