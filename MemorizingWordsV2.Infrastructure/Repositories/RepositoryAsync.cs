@@ -45,7 +45,6 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
         public async Task AddAsync(T item, CancellationToken cancellationToken)
         {
             await _dbContext.Set<T>().AddAsync(item, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task AddRangeAsync(IEnumerable<T> item)
@@ -56,7 +55,6 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
         public async Task AddRangeAsync(IEnumerable<T> item, CancellationToken cancellationToken)
         {
             await _dbContext.Set<T>().AddRangeAsync(item, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteByIdAsync(int id)
@@ -69,7 +67,6 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
             var entity =  await _dbContext.EnglishWords.FirstOrDefaultAsync(
                 model => model.Id == id, cancellationToken);
             _dbContext.EnglishWords.Remove(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
