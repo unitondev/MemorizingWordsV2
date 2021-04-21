@@ -3,11 +3,11 @@ using MemorizingWordsV2.Domain.Models;
 
 namespace MemorizingWordsV2.Application.Interfaces.Repositories
 {
-    public interface IWordRepository
+    public interface IWordRepository<T> where T : class
     {
-        EnglishWord GetWordWordById(int id);
-        List<EnglishWord> GetAllWords();
-        void AddWord(EnglishWord englishWord);
+        T GetWordById(int id);
+        List<T> GetAllWords();
+        void AddWord(T word);
         void DeleteWordById(int id);
     }
 }
