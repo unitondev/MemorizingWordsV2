@@ -9,7 +9,7 @@ namespace MemorizingWordsV2.Application.Interfaces.Repositories
         Task<T> GetByIdOrDefaultAsync(int id);
         Task<List<T>> GetAllAsync();
         Task AddAsync(T item);
-        Task AddRangeAsync(List<T> items);
+        Task AddRangeAsync(IEnumerable<T> items);
         Task DeleteByIdAsync(int id);
     }
 }
