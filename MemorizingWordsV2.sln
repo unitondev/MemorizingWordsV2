@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizingWordsV2.Applicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizingWordsV2.Infrastructure", "MemorizingWordsV2.Infrastructure\MemorizingWordsV2.Infrastructure.csproj", "{0090B965-74D8-4A9A-881E-7D5EB88FB557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemorizingWordsV2.Application.Tests", "MemorizingWordsV2.Application.Tests\MemorizingWordsV2.Application.Tests.csproj", "{D9209B9B-ADB8-4BFB-AEA7-9BEE2970552E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0090B965-74D8-4A9A-881E-7D5EB88FB557}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0090B965-74D8-4A9A-881E-7D5EB88FB557}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0090B965-74D8-4A9A-881E-7D5EB88FB557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9209B9B-ADB8-4BFB-AEA7-9BEE2970552E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9209B9B-ADB8-4BFB-AEA7-9BEE2970552E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9209B9B-ADB8-4BFB-AEA7-9BEE2970552E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9209B9B-ADB8-4BFB-AEA7-9BEE2970552E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
