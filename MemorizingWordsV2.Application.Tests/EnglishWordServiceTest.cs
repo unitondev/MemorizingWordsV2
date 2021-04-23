@@ -39,6 +39,7 @@ namespace MemorizingWordsV2.Application.Tests
             };
         }
         
+        
         [Fact]
         public async Task GetByIdOrDefaultAsync_WordExists_ListOfWordsExpected()
         {
@@ -60,6 +61,7 @@ namespace MemorizingWordsV2.Application.Tests
             Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
         };
         
+        
         [Fact]
         public async Task GetByIdOrDefaultAsync_WordDosentExist_DefaultExpected()
         {
@@ -76,13 +78,15 @@ namespace MemorizingWordsV2.Application.Tests
             Assert.Null(result);
         }
 
+        
         [Theory]
         [MemberData(nameof(GetTestWordInMethod))]
         public async Task AddAsync_ThreeDifferentWords_TrueExpected(EnglishWord englishWord)
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(work => work.EnglishWordRepository.AddAsync(englishWord));
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.FirstOrDefaultAsync(englishWord))
+                .ReturnsAsync((EnglishWord) null);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
             
             //act
@@ -115,40 +119,23 @@ namespace MemorizingWordsV2.Application.Tests
         }
         
         
-        [Theory(Skip = "should run in the same context")]
-        [MemberData(nameof(GetTheSameWordInMethod))]
-        public async Task AddAsync_TwoSameWords_FalseExpected(EnglishWord englishWord)
+        [Theory]
+        [MemberData(nameof(GetTestWordInMethod))]
+        public async Task AddAsync_TwoSameWords_FalseExpected(EnglishWord englishWord) 
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(work => work.EnglishWordRepository.AddAsync(englishWord));
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.FirstOrDefaultAsync(englishWord))
+                .ReturnsAsync(englishWord);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
             
             //act
+            await _sut.AddAsync(englishWord);
             var result = await _sut.AddAsync(englishWord);
 
             //assert
             Assert.False(result);
         }
         
-        public static IEnumerable<object[]> GetTheSameWordInMethod()
-        {
-            yield return new object[]
-            { 
-                new EnglishWord()
-                {
-                    Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
-                }};
-            yield return new object[]
-            { 
-                new EnglishWord()
-                {
-                    Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
-                }};
-        }
-        
     }
 }
-
-//в метод Setup настройка mock объекта: лямбда, вызывающая нужную функцию.
-//Returns определяем набор того, что возвращается
