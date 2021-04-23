@@ -17,7 +17,7 @@ namespace MemorizingWordsV2.Application.Tests
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            var testWords = GetTestWords();
+            var testWords = GetValidTestWords();
             mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetAllAsync())
                 .ReturnsAsync(testWords);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
@@ -29,7 +29,7 @@ namespace MemorizingWordsV2.Application.Tests
             Assert.Equal(testWords, result);
         }
         
-        private IEnumerable<EnglishWord> GetTestWords()
+        public static IEnumerable<EnglishWord> GetValidTestWords()
         {
             return new List<EnglishWord>()
             {
@@ -80,7 +80,7 @@ namespace MemorizingWordsV2.Application.Tests
 
         
         [Theory]
-        [MemberData(nameof(GetTestWordInMethod))]
+        [MemberData(nameof(GetThreeTestWordInMethod))]
         public async Task AddAsync_ThreeDifferentWords_TrueExpected(EnglishWord englishWord)
         {
             //arrange
@@ -96,31 +96,37 @@ namespace MemorizingWordsV2.Application.Tests
             Assert.True(result);
         }
 
-        public static IEnumerable<object[]> GetTestWordInMethod()
+        public static IEnumerable<object[]> GetThreeTestWordInMethod()
         {
             yield return new object[]
                 { 
                     new EnglishWord()
-                {
-                    Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
-                }};
+                    {
+                        Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
+                    }
+                    
+                };
             yield return new object[]
                 { 
                     new EnglishWord()
-                {
-                    Id = 2, Word = "especially ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
-                }};
+                    {
+                        Id = 2, Word = "especially ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
+                    }
+                    
+                };
             yield return new object[]
                 { 
                     new EnglishWord()
-                {
-                    Id = 3, Word = "obviously ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
-                }};
+                    {
+                        Id = 3, Word = "obviously ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
+                    }
+                    
+                };
         }
         
         
         [Theory]
-        [MemberData(nameof(GetTestWordInMethod))]
+        [MemberData(nameof(GetThreeTestWordInMethod))]
         public async Task AddAsync_TwoSameWords_FalseExpected(EnglishWord englishWord) 
         {
             //arrange
@@ -130,12 +136,71 @@ namespace MemorizingWordsV2.Application.Tests
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
             
             //act
-            await _sut.AddAsync(englishWord);
             var result = await _sut.AddAsync(englishWord);
 
             //assert
             Assert.False(result);
         }
         
+        
+        [Fact]
+        public async Task AddRangeAsync_TwoWordsNotContainedOneContained_TwoExpected() 
+        {
+            //arrange
+            var englishWords = GetValidTestWords();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            foreach (var englishWord in englishWords)
+            {
+                if (englishWord.Id == 2)
+                {
+                    mockUnitOfWork.Setup(work => work.EnglishWordRepository.FirstOrDefaultAsync(englishWord))
+                        .ReturnsAsync(englishWord);
+                }
+                else 
+                    mockUnitOfWork.Setup(work => work.EnglishWordRepository.FirstOrDefaultAsync(englishWord))
+                    .ReturnsAsync((EnglishWord) null);   
+            }
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            var addedWordsCount = await _sut.AddRangeAsync(englishWords);
+
+            //assert
+            Assert.Equal(2, addedWordsCount);
+        }
+        
+        [Theory]
+        [MemberData(nameof(GetThreeTestWordInMethod))]
+        public async Task DeleteAsync_ContainedWord_TrueExpected(EnglishWord englishWord) 
+        {
+            //arrange
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(englishWord.Id))
+                .ReturnsAsync(englishWord);
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            var result = await _sut.DeleteByIdAsync(englishWord.Id);
+
+            //assert
+            Assert.True(result);
+        }
+        
+        [Theory]
+        [MemberData(nameof(GetThreeTestWordInMethod))]
+        public async Task DeleteAsync_NotContainedWord_FalseExpected(EnglishWord englishWord) 
+        {
+            //arrange
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(englishWord.Id))
+                .ReturnsAsync((EnglishWord) null);
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            var result = await _sut.DeleteByIdAsync(englishWord.Id);
+
+            //assert
+            Assert.False(result);
+        }
     }
 }
