@@ -18,7 +18,8 @@ namespace MemorizingWordsV2.Application.Tests
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             var testWords = GetTestWords();
-            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetAllAsync().Result).Returns(testWords);
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetAllAsync())
+                .ReturnsAsync(testWords);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
 
             //act
@@ -39,12 +40,12 @@ namespace MemorizingWordsV2.Application.Tests
         }
         
         [Fact]
-        public async Task GetByIdOrDefaultAsync_WhenCalled_ListOfWordsExpected()
+        public async Task GetByIdOrDefaultAsync_WordExists_ListOfWordsExpected()
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(1).Result)
-                .Returns(_englishWord);
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(1))
+                .ReturnsAsync(_englishWord);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
 
             //act
@@ -60,12 +61,12 @@ namespace MemorizingWordsV2.Application.Tests
         };
         
         [Fact]
-        public async Task GetByIdOrDefaultAsync_WhenCalled_DefaultExpected()
+        public async Task GetByIdOrDefaultAsync_WordDosentExist_DefaultExpected()
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(1).Result)
-                .Returns((EnglishWord) null);
+            mockUnitOfWork.Setup(work => work.EnglishWordRepository.GetByIdOrDefaultAsync(1))
+                .ReturnsAsync((EnglishWord) null);
             var _sut = new EnglishWordService(mockUnitOfWork.Object);
 
             //act
@@ -77,7 +78,7 @@ namespace MemorizingWordsV2.Application.Tests
 
         [Theory]
         [MemberData(nameof(GetTestWordInMethod))]
-        public async Task AddAsync_WhenCalled_TrueExpected(EnglishWord englishWord)
+        public async Task AddAsync_ThreeDifferentWords_TrueExpected(EnglishWord englishWord)
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -116,7 +117,7 @@ namespace MemorizingWordsV2.Application.Tests
         
         [Theory(Skip = "should run in the same context")]
         [MemberData(nameof(GetTheSameWordInMethod))]
-        public async Task AddAsync_WhenCalled_FalseExpected(EnglishWord englishWord)
+        public async Task AddAsync_TwoSameWords_FalseExpected(EnglishWord englishWord)
         {
             //arrange
             var mockUnitOfWork = new Mock<IUnitOfWork>();
