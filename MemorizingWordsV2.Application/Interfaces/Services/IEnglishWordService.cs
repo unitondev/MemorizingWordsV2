@@ -8,5 +8,8 @@ namespace MemorizingWordsV2.Application.Interfaces.Services
     {
         public Task<IEnumerable<EnglishWord>> GetAllEnglishWordsAsync();
         public Task<EnglishWord> GetByIdOrDefaultAsync(int id);
+        Task<bool> AddAsync(EnglishWord item);
+        Task AddRangeAsync(IEnumerable<EnglishWord> items);
+        Task<bool> DeleteByIdAsync(int id);
     }
 }
