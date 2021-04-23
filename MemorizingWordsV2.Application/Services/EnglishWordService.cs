@@ -30,7 +30,7 @@ namespace MemorizingWordsV2.Application.Services
         //Now create method that fails return false, otherwise true
         public async Task<bool> AddAsync(EnglishWord item)
         {
-            bool isWordContained = _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(item).Result != null;
+            bool isWordContained =  await _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(item) != null;
             
             if (!isWordContained)
             {
@@ -49,7 +49,7 @@ namespace MemorizingWordsV2.Application.Services
             
             foreach (var englishWord in items)
             {
-                isWordContained = _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(englishWord).Result != null;
+                isWordContained =  await _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(englishWord) != null;
                 if(!isWordContained)
                     wordsThatsNotContained.Add(englishWord);
             }
@@ -60,7 +60,7 @@ namespace MemorizingWordsV2.Application.Services
 
         public async Task<bool> DeleteByIdAsync(int id)
         {
-            bool isWordContained = _unitOfWork.EnglishWordRepository.GetByIdOrDefaultAsync(id).Result != null;
+            bool isWordContained = await _unitOfWork.EnglishWordRepository.GetByIdOrDefaultAsync(id) != null;
 
             if (isWordContained)
             {
