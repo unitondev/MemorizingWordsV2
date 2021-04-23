@@ -7,12 +7,22 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly WordsDBContext _dbContext;
-        public IEnglishWordRepository EnglishWordRepository { get; private set; }
+        private IEnglishWordRepository _englishWordRepository { get; set; }
 
         public UnitOfWork(WordsDBContext dbContext)
         {
             _dbContext = dbContext;
-            EnglishWordRepository = new EnglishWordRepository(dbContext);
+        }
+
+        public IEnglishWordRepository EnglishWordRepository
+        {
+            get
+            {
+                if (_englishWordRepository == null)
+                    _englishWordRepository = new EnglishWordRepository(_dbContext);
+
+                return _englishWordRepository;
+            }
         }
 
         public async Task<int> CommitAsync()
