@@ -42,7 +42,7 @@ namespace MemorizingWordsV2.Application.Services
                 return false;
         }
 
-        public async Task AddRangeAsync(IEnumerable<EnglishWord> items)
+        public async Task<int> AddRangeAsync(IEnumerable<EnglishWord> items)
         {
             List<EnglishWord> wordsThatsNotContained = new List<EnglishWord>();
             bool isWordContained;
@@ -56,6 +56,7 @@ namespace MemorizingWordsV2.Application.Services
 
             await _unitOfWork.EnglishWordRepository.AddRangeAsync(wordsThatsNotContained);
             await _unitOfWork.CommitAsync();
+            return wordsThatsNotContained.Count;
         }
 
         public async Task<bool> DeleteByIdAsync(int id)
