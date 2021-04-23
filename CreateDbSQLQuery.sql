@@ -5,7 +5,7 @@ CREATE TABLE PartOfSpeech(
 
 CREATE TABLE EnglishWords(
     id INT IDENTITY(1,1) PRIMARY KEY,
-    word VARCHAR(50) NOT NULL,
+    word VARCHAR(50) NOT NULL UNIQUE,
     part_of_speech_id INT,
 	created_at DATETIME2(0),
     FOREIGN KEY (part_of_speech_id) REFERENCES PartOfSpeech(id) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -13,7 +13,7 @@ CREATE TABLE EnglishWords(
 
 CREATE TABLE RussianWords(
     id INT IDENTITY(1,1) PRIMARY KEY,
-    word VARCHAR(50) NOT NULL,
+    word VARCHAR(50) NOT NULL UNIQUE,
 );
 
 CREATE TABLE English_Russian_Words(
