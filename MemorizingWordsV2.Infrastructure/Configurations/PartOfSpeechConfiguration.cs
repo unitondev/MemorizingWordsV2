@@ -11,6 +11,7 @@ namespace MemorizingWordsV2.Infrastructure.Configurations
             entity.ToTable("PartOfSpeech");
             
             entity.Property(e => e.Id).HasColumnName("id");
+            
             entity.Property(e => e.PartName)
                 .IsRequired()
                 .HasMaxLength(30)
