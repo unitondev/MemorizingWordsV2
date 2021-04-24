@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MemorizingWordsV2.Application.Interfaces.Repositories;
 using MemorizingWordsV2.Application.Interfaces.Services;
@@ -27,9 +28,13 @@ namespace MemorizingWordsV2.Application.Services
         
         //TODO CANCELLATION TOKEN
         //TODO maybe create method that fails should throw an exception?
-        //Now create method that fails return false, otherwise true
         public async Task<bool> AddAsync(EnglishWord item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item), "Parameter item can't be null");
+            }
+            
             bool isWordContained =  await _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(item) != null;
             
             if (!isWordContained)
@@ -44,18 +49,32 @@ namespace MemorizingWordsV2.Application.Services
 
         public async Task<int> AddRangeAsync(IEnumerable<EnglishWord> items)
         {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items), "Parameter items can't be null");
+            }
+            
             List<EnglishWord> wordsThatsNotContained = new List<EnglishWord>();
             bool isWordContained;
             
             foreach (var englishWord in items)
             {
+                if (englishWord == null)
+                {
+                    break;
+                }
+                
                 isWordContained =  await _unitOfWork.EnglishWordRepository.FirstOrDefaultAsync(englishWord) != null;
                 if(!isWordContained)
                     wordsThatsNotContained.Add(englishWord);
             }
 
-            await _unitOfWork.EnglishWordRepository.AddRangeAsync(wordsThatsNotContained);
-            await _unitOfWork.CommitAsync();
+            if (wordsThatsNotContained.Count != 0)
+            {
+                await _unitOfWork.EnglishWordRepository.AddRangeAsync(wordsThatsNotContained);
+                await _unitOfWork.CommitAsync();
+            }
+            
             return wordsThatsNotContained.Count;
         }
 

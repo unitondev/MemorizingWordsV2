@@ -7,6 +7,7 @@ using MemorizingWordsV2.Application.Services;
 using MemorizingWordsV2.Domain.Models;
 using Moq;
 using Xunit;
+using Xunit.Sdk;
 
 namespace MemorizingWordsV2.Application.Tests
 {
@@ -80,7 +81,7 @@ namespace MemorizingWordsV2.Application.Tests
 
         
         [Theory]
-        [MemberData(nameof(GetThreeTestWordInMethod))]
+        [MemberData(nameof(GetTestWordInMethod))]
         public async Task AddAsync_ThreeDifferentWords_TrueExpected(EnglishWord englishWord)
         {
             //arrange
@@ -96,7 +97,7 @@ namespace MemorizingWordsV2.Application.Tests
             Assert.True(result);
         }
 
-        public static IEnumerable<object[]> GetThreeTestWordInMethod()
+        public static IEnumerable<object[]> GetTestWordInMethod()
         {
             yield return new object[]
                 { 
@@ -104,29 +105,12 @@ namespace MemorizingWordsV2.Application.Tests
                     {
                         Id = 1, Word = "definitely", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech(){Id = 1}.Id
                     }
-                    
-                };
-            yield return new object[]
-                { 
-                    new EnglishWord()
-                    {
-                        Id = 2, Word = "especially ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
-                    }
-                    
-                };
-            yield return new object[]
-                { 
-                    new EnglishWord()
-                    {
-                        Id = 3, Word = "obviously ", CreatedAt = DateTime.Now, PartOfSpeechId = new PartOfSpeech() {Id = 1}.Id
-                    }
-                    
                 };
         }
         
         
         [Theory]
-        [MemberData(nameof(GetThreeTestWordInMethod))]
+        [MemberData(nameof(GetTestWordInMethod))]
         public async Task AddAsync_TwoSameWords_FalseExpected(EnglishWord englishWord) 
         {
             //arrange
@@ -140,6 +124,19 @@ namespace MemorizingWordsV2.Application.Tests
 
             //assert
             Assert.False(result);
+        }
+        
+        
+        [Fact]
+        public async Task AddAsync_NullInParameter_ExceptionExpected()
+        {
+            //arrange
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            //assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.AddAsync(null));
         }
         
         
@@ -169,8 +166,39 @@ namespace MemorizingWordsV2.Application.Tests
             Assert.Equal(2, addedWordsCount);
         }
         
+        
+        [Fact]
+        public async Task AddRangeAsync_NullListInParameters_ArgumentNullExcExpected() 
+        {
+            //arrange
+            var englishWords = GetValidTestWords();
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            //assert
+            await Assert.ThrowsAsync<ArgumentNullException>(async () => await _sut.AddRangeAsync(null));
+        }
+        
+        
+        [Fact]
+        public async Task AddRangeAsync_NullWordInList_ZeroExpected() 
+        {
+            //arrange
+            var englishWords = new List<EnglishWord> {null};
+            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var _sut = new EnglishWordService(mockUnitOfWork.Object);
+            
+            //act
+            var result = await _sut.AddRangeAsync(englishWords);
+
+            //assert
+            Assert.Equal(0, result);
+        }
+
+        
         [Theory]
-        [MemberData(nameof(GetThreeTestWordInMethod))]
+        [MemberData(nameof(GetTestWordInMethod))]
         public async Task DeleteAsync_ContainedWord_TrueExpected(EnglishWord englishWord) 
         {
             //arrange
@@ -187,7 +215,7 @@ namespace MemorizingWordsV2.Application.Tests
         }
         
         [Theory]
-        [MemberData(nameof(GetThreeTestWordInMethod))]
+        [MemberData(nameof(GetTestWordInMethod))]
         public async Task DeleteAsync_NotContainedWord_FalseExpected(EnglishWord englishWord) 
         {
             //arrange
