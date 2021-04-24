@@ -7,7 +7,7 @@ using MemorizingWordsV2.Domain.Models;
 
 namespace MemorizingWordsV2.Application.Services
 {
-    public class EnglishWordService : IEnglishWordService
+    public class EnglishWordService : IEnglishWordService, IDisposable, IAsyncDisposable
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -90,6 +90,16 @@ namespace MemorizingWordsV2.Application.Services
             }
             else
                 return false;
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _unitOfWork.DisposeAsync();
         }
     }
 }
