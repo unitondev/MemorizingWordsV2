@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MemorizingWordsV2.Application.Interfaces.Repositories;
 using MemorizingWordsV2.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,12 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
         }
         public async Task<EnglishWord> FirstOrDefaultAsync(EnglishWord englishWord)
         {
-            return await _dbContext.EnglishWords.FirstOrDefaultAsync(word => word.Word == englishWord.Word);
+            return await FirstOrDefaultAsync(englishWord, CancellationToken.None);
+        }
+        
+        public async Task<EnglishWord> FirstOrDefaultAsync(EnglishWord englishWord, CancellationToken cancellationToken)
+        {
+            return await _dbContext.EnglishWords.FirstOrDefaultAsync(word => word.Word == englishWord.Word, cancellationToken);
         }
     }
 }
