@@ -8,6 +8,7 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
     {
         private readonly WordsDBContext _dbContext;
         private IEnglishWordRepository _englishWordRepository { get; set; }
+        private IRussianWordRepository _russianWordRepository { get; set; }
 
         public UnitOfWork(WordsDBContext dbContext)
         {
@@ -22,6 +23,17 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
                     _englishWordRepository = new EnglishWordRepository(_dbContext);
 
                 return _englishWordRepository;
+            }
+        }
+        
+        public IRussianWordRepository RussianWordRepository
+        {
+            get
+            {
+                if (_russianWordRepository == null)
+                    _russianWordRepository = new RussianWordRepository(_dbContext);
+
+                return _russianWordRepository;
             }
         }
 
