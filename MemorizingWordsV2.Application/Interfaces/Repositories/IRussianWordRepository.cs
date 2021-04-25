@@ -8,6 +8,8 @@ namespace MemorizingWordsV2.Application.Interfaces.Repositories
     public interface IRussianWordRepository : IRepositoryAsync<RussianWord>
     {
         Task<RussianWord> FirstOrDefaultAsync(RussianWord russianWord);
-        public Task<List<RussianWord>> GetRelatedWordAndPartOfSpeechAsync(RussianWord russianWord);
+        Task<List<RussianWord>> GetRelatedWordAndPartOfSpeechAsync(RussianWord russianWord);
+        Task<int> GetTheLastWordIdAsync();
+        Task<int> GetTheFirstWordIdAsync();
     }
 }
