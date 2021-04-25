@@ -1,12 +1,14 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using MemorizingWordsV2.ConsoleApplication.Interfaces;
 
 namespace MemorizingWordsV2.ConsoleApplication
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IApplication application = new Application();
+            await application.Initialize().Run();
         }
     }
 }
