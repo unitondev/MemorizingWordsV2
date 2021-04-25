@@ -31,7 +31,27 @@ namespace MemorizingWordsV2.Infrastructure.Repositories
         {
             return await GetRelatedWordAndPartOfSpeechAsync(russianWord, CancellationToken.None);
         }
+
+        public async Task<int> GetTheLastWordIdAsync()
+        {
+            return await GetTheLastWordIdAsync(CancellationToken.None);
+        }
+
+        public async Task<int> GetTheFirstWordIdAsync()
+        {
+            return await GetTheFirstWordIdAsync(CancellationToken.None);
+        }
         
+        public async Task<int> GetTheFirstWordIdAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.RussianWords.MinAsync(word => word.Id, cancellationToken);
+        }
+
+        public async Task<int> GetTheLastWordIdAsync(CancellationToken cancellationToken)
+        {
+            return await _dbContext.RussianWords.MaxAsync(word => word.Id, cancellationToken);
+        }
+
         public async Task<List<RussianWord>> GetRelatedWordAndPartOfSpeechAsync(RussianWord russianWord, CancellationToken cancellationToken)
         {
             var relatedWordAndPartOfSpeech = await _dbContext.RussianWords

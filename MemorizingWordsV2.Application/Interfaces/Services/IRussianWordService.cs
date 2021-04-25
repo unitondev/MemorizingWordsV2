@@ -10,5 +10,7 @@ namespace MemorizingWordsV2.Application.Interfaces.Services
         Task<bool> AddPairAsync(RussianWord russianWord, EnglishWord englishWord);
         Task<int> AddPairRangeAsync(IEnumerable<RussianWord> russianWords, IEnumerable<EnglishWord> englishWords);
         Task<bool> DeletePairByIdAsync(int id);
+        Task<int> GetTheLastWordIdAsync();
+        Task<int> GetTheFirstWordIdAsync();
     }
 }

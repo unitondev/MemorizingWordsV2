@@ -120,7 +120,17 @@ namespace MemorizingWordsV2.Application.Services
             else
                 return false;
         }
-        
+
+        public async Task<int> GetTheLastWordIdAsync()
+        {
+            return await _unitOfWork.RussianWordRepository.GetTheLastWordIdAsync();
+        }
+
+        public async Task<int> GetTheFirstWordIdAsync()
+        {
+            return await _unitOfWork.RussianWordRepository.GetTheFirstWordIdAsync();
+        }
+
         public void Dispose()
         {
             _unitOfWork.Dispose();
